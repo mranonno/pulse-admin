@@ -31,3 +31,6 @@ export interface GetAllProductsResponse {
   success: boolean;
   products: Product[];
 }
+export interface GetAllProductsResponse {
+  products: Product[];
+}

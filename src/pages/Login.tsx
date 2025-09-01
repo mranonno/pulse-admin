@@ -26,6 +26,7 @@ const Login: React.FC = () => {
     try {
       const response: LoginResponse = await loginUser(formData);
       localStorage.setItem("authToken", response.token);
+      console.log(response);
       navigate("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
