@@ -116,83 +116,158 @@ const ProductForm: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Grid layout for inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Product Name"
-            value={formData.name}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-            required
-          />
-          <input
-            type="text"
-            name="productBrand"
-            placeholder="Enter Product Brand"
-            value={formData.productBrand}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-          />
-          <input
-            type="text"
-            name="productModel"
-            placeholder="Enter Product Model"
-            value={formData.productModel}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-            required
-          />
-          <input
-            type="text"
-            name="productOrigin"
-            placeholder="Enter Product Origin"
-            value={formData.productOrigin}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-          />
-          <input
-            type="number"
-            name="price"
-            placeholder="Enter price"
-            value={formData.price}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-            required
-          />
-          <input
-            type="number"
-            name="quantity"
-            placeholder="Enter quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            disabled={loading}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
-            required
-          />
+          {/* Product Name */}
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-2 font-semibold text-text"
+            >
+              Product Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="e.g. SPO2 Sensor"
+              value={formData.name}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+              required
+            />
+          </div>
+
+          {/* Product Brand */}
+          <div>
+            <label
+              htmlFor="productBrand"
+              className="block mb-2 font-semibold text-text"
+            >
+              Brand
+            </label>
+            <input
+              type="text"
+              id="productBrand"
+              name="productBrand"
+              placeholder="e.g. Younker"
+              value={formData.productBrand}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+            />
+          </div>
+
+          {/* Product Model */}
+          <div>
+            <label
+              htmlFor="productModel"
+              className="block mb-2 font-semibold text-text"
+            >
+              Model
+            </label>
+            <input
+              type="text"
+              id="productModel"
+              name="productModel"
+              placeholder="e.g. YM2000"
+              value={formData.productModel}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+              required
+            />
+          </div>
+
+          {/* Product Origin */}
+          <div>
+            <label
+              htmlFor="productOrigin"
+              className="block mb-2 font-semibold text-text"
+            >
+              Origin
+            </label>
+            <input
+              type="text"
+              id="productOrigin"
+              name="productOrigin"
+              placeholder="e.g. China"
+              value={formData.productOrigin}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+            />
+          </div>
+
+          {/* Price */}
+          <div>
+            <label
+              htmlFor="price"
+              className="block mb-2 font-semibold text-text"
+            >
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              placeholder="e.g. 1500"
+              value={formData.price}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+              required
+            />
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label
+              htmlFor="quantity"
+              className="block mb-2 font-semibold text-text"
+            >
+              Quantity
+            </label>
+            <input
+              type="number"
+              id="quantity"
+              name="quantity"
+              placeholder="e.g. 10"
+              value={formData.quantity}
+              onChange={handleChange}
+              disabled={loading}
+              className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
+              required
+            />
+          </div>
         </div>
 
         {/* Description */}
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-          disabled={loading}
-          className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none min-h-[120px] disabled:opacity-50"
-        />
+        <div>
+          <label
+            htmlFor="description"
+            className="block mb-2 font-semibold text-text"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="e.g. High-accuracy SPO2 sensor compatible with patient monitors."
+            value={formData.description}
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none min-h-[120px] disabled:opacity-50"
+          />
+        </div>
 
         {/* Image Upload */}
         <div>
-          <label className="block mb-2 font-semibold text-text">
+          <label htmlFor="image" className="block mb-2 font-semibold text-text">
             Product Image
           </label>
           <input
             type="file"
+            id="image"
             accept="image/*"
             onChange={handleImageChange}
             disabled={loading}
