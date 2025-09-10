@@ -7,44 +7,52 @@ import {
   getProductById,
 } from "../services/productService";
 import type { Product } from "../types/types";
+import Loader from "../components/Loader";
 
 const ProductForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<
-    Omit<Product, "price" | "quantity"> & {
-      price: string;
-      quantity: string;
-    }
-  >({
+  const [formData, setFormData] = useState<Product>({
     name: "",
+    productBrand: "",
     productModel: "",
     productOrigin: "",
     description: "",
-    price: "",
-    quantity: "",
+    price: 0,
+    quantity: 0,
     image: undefined,
   });
 
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
   useEffect(() => {
     if (id) {
       const fetchProduct = async () => {
+        setFetching(true);
         try {
-          const product = await getProductById(id);
+          const response = await getProductById(id);
+          const product = response;
           setFormData({
-            ...product,
-            price: String(product.price),
-            quantity: String(product.quantity),
+            name: product.name ?? "",
+            productBrand: product.productBrand ?? "",
+            productModel: product.productModel ?? "",
+            productOrigin: product.productOrigin ?? "",
+            description: product.description ?? "",
+            price: product.price ?? 0,
+            quantity: product.quantity ?? 0,
+            image:
+              typeof product.image === "string" ? product.image : undefined,
           });
           if (typeof product.image === "string") {
             setPreview(product.image);
           }
         } catch (error) {
           console.error("Failed to fetch product:", error);
+        } finally {
+          setFetching(false);
         }
       };
       fetchProduct();
@@ -54,10 +62,10 @@ const ProductForm: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "number" ? Number(value) : value,
     }));
   };
 
@@ -81,18 +89,11 @@ const ProductForm: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Convert price and quantity to numbers before sending
-    const submitData: Product = {
-      ...formData,
-      price: Number(formData.price),
-      quantity: Number(formData.quantity),
-    };
-
     try {
       if (id) {
-        await updateProduct(id, submitData);
+        await updateProduct(id, formData);
       } else {
-        await createProduct(submitData);
+        await createProduct(formData);
       }
       navigate("/products");
     } catch (error) {
@@ -101,6 +102,10 @@ const ProductForm: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (fetching) {
+    return <Loader />;
+  }
 
   return (
     <div className="max-w-3xl mx-auto bg-card p-8 rounded-2xl shadow-lg">
@@ -117,8 +122,18 @@ const ProductForm: React.FC = () => {
             placeholder="Enter Product Name"
             value={formData.name}
             onChange={handleChange}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
             required
+          />
+          <input
+            type="text"
+            name="productBrand"
+            placeholder="Enter Product Brand"
+            value={formData.productBrand}
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
           />
           <input
             type="text"
@@ -126,7 +141,8 @@ const ProductForm: React.FC = () => {
             placeholder="Enter Product Model"
             value={formData.productModel}
             onChange={handleChange}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
             required
           />
           <input
@@ -135,7 +151,8 @@ const ProductForm: React.FC = () => {
             placeholder="Enter Product Origin"
             value={formData.productOrigin}
             onChange={handleChange}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
           />
           <input
             type="number"
@@ -143,7 +160,8 @@ const ProductForm: React.FC = () => {
             placeholder="Enter price"
             value={formData.price}
             onChange={handleChange}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
             required
           />
           <input
@@ -152,7 +170,8 @@ const ProductForm: React.FC = () => {
             placeholder="Enter quantity"
             value={formData.quantity}
             onChange={handleChange}
-            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none"
+            disabled={loading}
+            className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none disabled:opacity-50"
             required
           />
         </div>
@@ -163,7 +182,8 @@ const ProductForm: React.FC = () => {
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
-          className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none min-h-[120px]"
+          disabled={loading}
+          className="w-full border border-border bg-background p-3 rounded-lg focus:ring-2 focus:ring-primary outline-none min-h-[120px] disabled:opacity-50"
         />
 
         {/* Image Upload */}
@@ -175,7 +195,8 @@ const ProductForm: React.FC = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="w-full border border-border rounded-lg p-2 cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-green-800 transition"
+            disabled={loading}
+            className="w-full border border-border rounded-lg p-2 cursor-pointer file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-green-800 transition disabled:opacity-50"
           />
           {preview && (
             <div className="mt-4">

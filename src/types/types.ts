@@ -19,6 +19,7 @@ export interface Product {
   _id?: string;
   name: string;
   productModel: string;
+  productBrand: string;
   productOrigin: string;
   description: string;
   price: number;

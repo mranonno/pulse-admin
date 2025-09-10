@@ -4,6 +4,7 @@ import { getAllProducts, deleteProduct } from "../services/productService";
 import type { Product } from "../types/types";
 import { Link } from "react-router";
 import { Pencil, Trash2, PlusCircle, ImageOff } from "lucide-react";
+import Loader from "../components/Loader";
 
 const Products: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -44,7 +45,7 @@ const Products: React.FC = () => {
   };
 
   if (loading) {
-    return <p className="text-gray-600">Loading products...</p>;
+    return <Loader />;
   }
 
   return (

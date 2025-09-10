@@ -4,6 +4,11 @@ import type { GetAllProductsResponse, Product } from "../types/types";
 
 const API_BASE = "https://pulse-technology-server.vercel.app/api/products";
 
+interface responseProduct {
+  product: Product;
+  message: string;
+}
+
 // ✅ Utility to convert Product into FormData
 const toFormData = (product: Product): FormData => {
   const formData = new FormData();
@@ -44,10 +49,10 @@ export const getAllProducts = async (): Promise<GetAllProductsResponse> => {
 // ✅ Get single product by ID
 export const getProductById = async (id: string): Promise<Product> => {
   const token = localStorage.getItem("authToken");
-  const res = await axios.get<Product>(`${API_BASE}/${id}`, {
+  const res = await axios.get<responseProduct>(`${API_BASE}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return res.data;
+  return res.data.product;
 };
 
 // ✅ Create product (with image upload)
