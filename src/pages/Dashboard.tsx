@@ -4,7 +4,7 @@ import React from "react";
 const Dashboard: React.FC = () => {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+      <h1 className="text-2xl font-bold mb-4">Dashboards</h1>
       <p className="text-text">
         Welcome to Pulse Admin. Use the sidebar to navigate through the system.
       </p>
